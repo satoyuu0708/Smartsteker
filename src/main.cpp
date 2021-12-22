@@ -50,7 +50,7 @@ BluetoothSerial SerialBT;
 #define PIN_R2  3
 #define PIN_G2 25
 #define PIN_B2 1*/
-#define CLK  1 //15
+#define CLK  15
 #define OE   18
 #define LAT  19
 #define A   12
@@ -144,7 +144,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
       deviceConnected = true;
     };
 
-    void onDisconnect(BLEServer* pServer) {ls
+    void onDisconnect(BLEServer* pServer) {
       Serial.println("disconnect");
       deviceConnected = false;
     };
@@ -178,19 +178,25 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     delay(60);
     //Serial.println(value.c_str());
     if(num == 1){
+     matrix.clear(); 
      matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
      drawHP(matrix.Color333(0, 7, 0),2,1,2,14);//半分
+     matrix.show();
 
     }
 
     else if(num == 2){
+     matrix.clear(); 
      matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
      drawHP(yellow,2,8,2,7);//半分
+     matrix.show();
     }
     
     else if(num == 3){
-       matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
-       drawHP(red,2,13,2,3);//限界
+      matrix.clear();
+      matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
+      drawHP(red,2,13,2,3);//限界
+      matrix.show();
     }
   
   }
@@ -222,8 +228,7 @@ void initBLEServise() {
 
 void setup() {
   matrix.begin();
-  matrix.show();
-  Serial.begin(115200);
+  matrix.clear();
   initBLEServise();
   //matrix.setBrightness(BRIGHTNESS);
  
