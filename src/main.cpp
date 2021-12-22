@@ -50,7 +50,7 @@ BluetoothSerial SerialBT;
 #define PIN_R2  3
 #define PIN_G2 25
 #define PIN_B2 1*/
-#define CLK  15
+#define CLK  1 //15
 #define OE   18
 #define LAT  19
 #define A   12
@@ -132,6 +132,11 @@ static const uint16_t PROGMEM
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
  };
 
+void drawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
+   matrix.drawRect(hpx,hpy,hpw,hph,color);
+   matrix.drawRect(ipx,ipy,ipw,iph,color);
+   delay(10000);
+};
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -139,7 +144,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
       deviceConnected = true;
     };
 
-    void onDisconnect(BLEServer* pServer) {
+    void onDisconnect(BLEServer* pServer) {ls
       Serial.println("disconnect");
       deviceConnected = false;
     };
@@ -214,11 +219,6 @@ void initBLEServise() {
 
 }
 
-void drawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
-   matrix.drawRect(hpx,hpy,hpw,hph,color);
-   matrix.drawRect(ipx,ipy,ipw,iph,color);
-   delay(10000);
-};
 
 void setup() {
   matrix.begin();
