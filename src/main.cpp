@@ -242,5 +242,6 @@ void loop() {
        //drawHP(yellow,2,8,2,7);//半分
        //drawHP(red,2,13,2,3);//限界
      
-
+  
+  
 }
