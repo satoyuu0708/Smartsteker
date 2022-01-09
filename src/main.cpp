@@ -1,6 +1,6 @@
 // testshapes demo for Adafruit RGBmatrixPanel library.
 // Demonstrates the drawing abilities of the RGBmatrixPanel library.
-// For WHITE6x32 RGB LED matrix:
+// For red6x32 RGB LED matrix:
 // http://www.adafruit.com/products/420
 
 // Written by Limor Fried/Ladyada & Phil Burgess/PaintYourDragon
@@ -37,19 +37,7 @@ BluetoothSerial SerialBT;
 // USE THIS ON ARDUINO UNO, ADAFRUIT METRO M0, etc.
 //#define CLK A4 // USE THIS ON METRO M4 (not M0)
 //#define CLK WHITEWHITE // USE THIS ON ARDUINO MEGA
-/*#define OE   23
-#define CLK  2
-#define LAT  5
-#define A   18
-#define B   19
-#define C   21
-#define D   22
-#define PIN_R1  16
-#define PIN_G1  26
-#define PIN_B1  17
-#define PIN_R2  3
-#define PIN_G2 25
-#define PIN_B2 1*/
+
 #define CLK  15
 #define OE   18
 #define LAT  19
@@ -87,9 +75,10 @@ bool deviceConnected = false;
   int16_t  hpw = 4;
   int16_t  hph = 16;
   uint16_t WHITE = 0xffffff;
-  int16_t red = 0xfff000;//限界
+  uint16_t red = 0xfff000;//限界
   int16_t green = matrix.Color333(0, 7, 0);//満タン
   int16_t yellow = 0xffff00;//半分*/
+  uint16_t blue = 0x0000ff;
 
 /*static const uint16_t PROGMEM
  driverrr1[16][32]={
@@ -113,7 +102,7 @@ bool deviceConnected = false;
 };*/
 
 static const uint16_t PROGMEM
- driverrr2[16][32]={
+ ddriver[16][32]={
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0, WHITE, WHITE, WHITE, 0, 0},
@@ -130,6 +119,46 @@ static const uint16_t PROGMEM
     {0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+ };
+
+ static const uint16_t PROGMEM
+ bdriver[16][32]={
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, blue, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0, 0, 0, 0, blue, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue,blue , 0, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, blue, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, 0, 0},
+ };
+
+static const uint16_t PROGMEM
+ rdriver[16][32]={
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, red, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0, 0, 0, 0, red, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, 0, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red,red , 0, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, red, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, 0, 0},
  };
 
 void drawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
@@ -179,7 +208,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     //Serial.println(value.c_str());
     if(num == 1){
      matrix.clear(); 
-     matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
+     matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
      drawHP(matrix.Color333(0, 7, 0),2,1,2,14);//半分
      matrix.show();
 
@@ -187,14 +216,14 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
     else if(num == 2){
      matrix.clear(); 
-     matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
+     matrix.drawRGBBitmap(0, 0, bdriver[0],mw, mh );//画像表示
      drawHP(yellow,2,8,2,7);//半分
      matrix.show();
     }
     
     else if(num == 3){
       matrix.clear();
-      matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
+      matrix.drawRGBBitmap(0, 0, ddriver[0],mw, mh );//画像表示
       drawHP(red,2,13,2,3);//限界
       matrix.show();
     }
