@@ -75,31 +75,17 @@ bool deviceConnected = false;
   int16_t  hpw = 4;
   int16_t  hph = 16;
   uint16_t WHITE = 0xffffff;
+  uint16_t BLACK = 0x000000;
   uint16_t red = 0xfff000;//限界
-  int16_t green = matrix.Color333(0, 7, 0);//満タン
-  int16_t yellow = 0xffff00;//半分*/
+  uint16_t green = matrix.Color333(0, 7, 0);//満タン
+  uint16_t yellow = 0xffff00;//半分*/
   uint16_t blue = 0x0000ff;
+  uint16_t orange = 0xffa00;
+  uint16_t rightgreen =matrix.Color333(3, 3, 0);//満タン
+  int16_t tx = 0;
+  int16_t ty = 0;
 
-/*static const uint16_t PROGMEM
- driverrr1[16][32]={
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,WHITE,0,0,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,WHITE,0,0,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,WHITE,WHITE,WHITE,0,0,0,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0,0},
-  {0,0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,0,0,WHITE,WHITE,WHITE,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,WHITE,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,0,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,0,0,WHITE,0,0,0,0,0},
-  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,0,0,0,0,0},
-      
-};*/
+
 
 static const uint16_t PROGMEM
  ddriver[16][32]={
@@ -124,42 +110,130 @@ static const uint16_t PROGMEM
  static const uint16_t PROGMEM
  bdriver[16][32]={
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
-    {0 ,0, 0, 0, 0, 0, 0, 0, 0, blue, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0, 0, 0, 0, blue, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, 0, 0, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, blue, blue, blue, blue, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue,blue , 0, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, blue, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, blue, blue, blue, blue, blue, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, 0, 0, 0, 0, 0, WHITE, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue,blue , 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, blue, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, blue, blue, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
  };
 
 static const uint16_t PROGMEM
  rdriver[16][32]={
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
-    {0 ,0, 0, 0, 0, 0, 0, 0, 0, red, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0, 0, 0, 0, red, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, 0, 0, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, red, red, red, red, 0, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, 0, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red,red , 0, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, red, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, red, red, red, red, red, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, 0, 0, 0, 0, 0, WHITE, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, red, red, red, red, red, red, red, red, red, red, red, red, red, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red,red , 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, red, red, red, red, red, red, red, red, red, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, red, red, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
  };
+
+ static const uint16_t PROGMEM
+ ydriver[16][32]={
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, 0, 0, 0, 0, 0, WHITE, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow,yellow , 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, yellow, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, yellow, yellow, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+ };
+
+ static const uint16_t PROGMEM
+ gdriver[16][32]={
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, green, green, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0 ,0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, green, green, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, green, green, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, 0, 0, 0, 0, 0, WHITE, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, green, green, green, green, green, green, green, green, green, green, green, green, green, 0, 0, 0, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, 0, 0, green, green, green, green, green, green, green, green, green, green, green, green, green, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, green, 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green,green , 0, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, 0, 0, 0, green, green, green, green, green, green, green, green, green, green, green, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, green, green, green, green, green, green, green, green, green, 0, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
+ };
+
+static const uint16_t PROGMEM
+  newmark[16][32]={
+ 	  {0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,WHITE,0,0,0,0,0,0,0,0,WHITE,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,WHITE,0,0,0,0,0,0,WHITE,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,WHITE,0,0,0,0,WHITE,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,WHITE,0,0,WHITE,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  };
+
+  static const uint16_t PROGMEM
+   oldermark1[16][32]{
+{0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,WHITE,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,WHITE,orange,orange,WHITE,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,WHITE,orange,orange,orange,orange,WHITE,rightgreen,rightgreen,rightgreen,rightgreen,rightgreen,WHITE,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,WHITE,orange,orange,orange,orange,WHITE,WHITE,rightgreen,rightgreen,rightgreen,WHITE,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,WHITE,orange,orange,orange,orange,orange,WHITE,WHITE,WHITE,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,WHITE,orange,orange,orange,orange,orange,orange,WHITE,WHITE,WHITE,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,WHITE,orange,orange,orange,WHITE,yellow,yellow,yellow,WHITE,WHITE,green,green,green,green,WHITE,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,yellow,yellow,yellow,yellow,yellow,WHITE,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,WHITE,green,green,WHITE,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,yellow,yellow,yellow,yellow,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+
+   };
+
+
+void numberText(char number1,char number2,int16_t tx,int16_t ty,int16_t txx, int16_t tyy){
+   matrix.drawChar(tx, ty, number1, WHITE, BLACK,2);
+   matrix.drawChar(txx, tyy, number2, WHITE, BLACK,2);
+
+};
 
 void drawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
    matrix.drawRect(hpx,hpy,hpw,hph,color);
@@ -207,29 +281,111 @@ class MyCallbacks: public BLECharacteristicCallbacks {
     delay(60);
     //Serial.println(value.c_str());
     if(num == 1){
-     matrix.clear(); 
-     matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
-     drawHP(matrix.Color333(0, 7, 0),2,1,2,14);//半分
-     matrix.show();
+    /*matrix.drawRGBBitmap(0, 0, gdriver[0],mw, mh );//画像表示
+       drawHP(matrix.Color333(0, 7, 0),2,13,2,16);//満タン
+      delay(1000);
+       matrix.clear(); 
+      matrix.drawRGBBitmap(0, 0, ydriver[0],mw, mh );//画像表示
+      drawHP(orange,2,7,2,13);//半分
+      delay(1000);
+       matrix.clear(); 
+      matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
+      drawHP(red,2,0,2,14);//限界
+       //drawHP(matrix.Color333(0, 7, 0),2,1,2,14);//満タン
+      delay(1000);
+      matrix.clear(); */
 
     }
 
     else if(num == 2){
      matrix.clear(); 
-     matrix.drawRGBBitmap(0, 0, bdriver[0],mw, mh );//画像表示
-     drawHP(yellow,2,8,2,7);//半分
-     matrix.show();
+     matrix.drawRGBBitmap(0, 0, newmark[0],mw, mh );//画像表示
+     //drawHP(yellow,2,8,2,7);//半分
+     //matrix.show();
     }
     
     else if(num == 3){
       matrix.clear();
-      matrix.drawRGBBitmap(0, 0, ddriver[0],mw, mh );//画像表示
-      drawHP(red,2,13,2,3);//限界
-      matrix.show();
+      matrix.drawRGBBitmap(0, 0, oldermark1[0],mw, mh );//画像表示
+      //drawHP(red,2,13,2,3);//限界
+      //matrix.show();
     }
+    else if(num == 4){
+     matrix.clear();
+     numberText('7','7',5,1,17,1);
+    }
+    else if(num == 5){
+      matrix.clear(); 
+     numberText('5','5',5,1,17,1);
+    }
+    
+    else if(num == 6){
+       matrix.clear();
+      numberText('1','7',5,1,17,1);
+    }
+    else if(num == 7){
+       matrix.clear();
+     numberText('8','1',6,1,18,1);
+    }
+    else if(num == 8){
+       matrix.clear();
+     numberText('6','9',6,1,18,1);
+    }
+    else if(num == 9){
+       matrix.clear();
+     numberText('2','9',6,1,18,1);
+    }
+    else if(num == 10){
+       matrix.clear();
+     numberText('4','3',5,1,17,1);
+    }
+    else if(num == 11){
+       matrix.clear();
+     numberText('8','7',6,1,18,1);
+    }
+    else if(num == 12){
+       matrix.clear();
+     numberText('9','7',6,1,18,1);
+    }
+     else if(num == 13){
+      matrix.drawRGBBitmap(0, 0, gdriver[0],mw, mh );//画像表示
+       drawHP(matrix.Color333(0, 7, 0),2,0,2,16);//満タン
+       matrix.clear(); 
+    }
+    else if(num == 14){
+      matrix.drawRGBBitmap(0, 0, ydriver[0],mw, mh );//画像表示
+      drawHP(orange,2,7,2,13);//半分
+       matrix.clear(); 
+    }
+    else if(num == 15){
+       matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
+      drawHP(red,2,13,2,15);//限界
+      matrix.clear(); 
+    }
+
   
   }
 };
+
+void rdrawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
+   matrix.drawRect(hpx,hpy,hpw,hph,color);
+   for (ipy = 15; ipy > 13; ipy--){
+   
+   matrix.drawRect(ipx,ipy,ipw,ipy,color);
+   delay(10);
+   }
+   
+   
+   delay(10000);
+};
+
+/*void numberText(uint8_t number){
+  matrix.setTextSize(20,20);
+  matrix.setCursor(tx = 10, ty = 10);
+  matrix.drawChar(uint16_t x, uint16_t y, char c, uint16_t color, uint16_t bg, uint8_t size);
+  matrix.
+};*/
+
 
 
 void initBLEServise() {
@@ -254,22 +410,41 @@ void initBLEServise() {
 
 }
 
-
+int ipy=0;
 void setup() {
   matrix.begin();
   matrix.clear();
   initBLEServise();
   //matrix.setBrightness(BRIGHTNESS);
+
  
 }
 
 
 void loop() {
      
-       //matrix.drawRGBBitmap(0, 0, driverrr2[0],mw, mh );//画像表示
-       //drawHP(matrix.Color333(0, 7, 0),2,1,2,14);//半分
-       //drawHP(yellow,2,8,2,7);//半分
+      
+      //numberText('7','7',5,1,17,1);
+      //numberText('5','5',5,1,17,1);
+      //numberText('1','7',5,1,17,1);
+      //numberText('8','1',6,1,18,1);
+      //numberText('6','9',6,1,18,1);
+      //numberText('2','9',6,1,18,1);
+      //numberText('4','3',5,1,17,1);
+      //numberText('8','7',6,1,18,1);
+      //numberText('9','7',6,1,18,1);
+      //matrix.drawRGBBitmap(0, 0, gdriver[0],mw, mh );//画像表示
+      //matrix.drawRGBBitmap(0, 0, ydriver[0],mw, mh );//画像表示
+      //matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
+
+      //drawHP(matrix.Color333(0, 7, 0),2,13,2,16);//満タン
+      // drawHP(orange,2,7,2,13);//半分
        //drawHP(red,2,13,2,3);//限界
+       //drawHP(matrix.Color333(7, 0, 0),2,1,2,14);//半分
+
+      //matrix.drawRGBBitmap(0, 0, oldermark1[0],mw, mh );//画像表示
+      
+
      
   
   
