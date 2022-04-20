@@ -54,12 +54,12 @@ BluetoothSerial SerialBT;
 #define mw 32
 #define mh 16
 #define NUMMATRIX (mw*mh)//電光掲示板の面積
-#define setBrightness(x) fillScreen(0) // no-op, no brightness on this board
+#define setBrightness(x) fillScreen(15) // no-op, no brightness on this board
 #define clear()          fillScreen(0)
 #define show()           swapBuffers(true)
 #define Color(x,y,z)     Color444(x/16,y/16,z/16)
 #define LED_BLACK           0
-#define BLE_LOCAL_NAME "ESP32"
+#define BLE_LOCAL_NAME "Smart Sticker"
 // BLEのサービスUUID。適当なUUID(ランダムで生成したものがよい)を設定して下さい。
 #define BLE_SERVICE_UUID "133fe8d4-5197-4675-9d76-d9bbf2450bb4"
 // BLEのCharacteristic UUID。適当なUUID(ランダムで生成したものがよい)を設定して下さい。
@@ -187,6 +187,7 @@ static const uint16_t PROGMEM
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, green, green, 0, 0, 0, 0, 0, 0, 0, 0, 0, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, 0, 0},
  };
 
+
 static const uint16_t PROGMEM
   newmark[16][32]={
  	  {0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0},
@@ -205,6 +206,46 @@ static const uint16_t PROGMEM
     {0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  };
+
+  static const uint16_t PROGMEM
+  newmark1[16][32]={
+ 	  {0,0,0,0,0,0,blue,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,blue,blue,blue,0,WHITE,yellow,WHITE,0,0,0,0,0,0,0,0,WHITE,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,blue,blue,blue,blue,blue,WHITE,yellow,yellow,WHITE,0,0,0,0,0,0,WHITE,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,blue,blue,blue,blue,blue,WHITE,yellow,yellow,yellow,WHITE,0,0,0,0,WHITE,green,green,green,WHITE,0,0,blue,0,0,0,0,0,0},
+    {0,0,0,0,0,blue,blue,blue,0,WHITE,yellow,yellow,yellow,yellow,WHITE,0,0,WHITE,green,green,green,green,WHITE,0,blue,blue,blue,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,green,green,green,green,green,WHITE,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,blue,blue,blue,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,green,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,yellow,green,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+  };
+
+  static const uint16_t PROGMEM
+  newmark2[16][32]={
+ 	  {0,0,0,0,0,0,blue,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,blue,blue,blue,0,WHITE,yellow,WHITE,0,0,0,0,0,0,0,0,WHITE,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,blue,blue,blue,blue,blue,WHITE,yellow,yellow,WHITE,0,0,0,0,0,0,WHITE,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,blue,blue,blue,blue,blue,WHITE,yellow,yellow,yellow,WHITE,0,0,0,0,WHITE,green,green,green,WHITE,0,0,blue,0,0,0,0,0,0},
+    {0,0,0,0,0,blue,blue,blue,0,WHITE,yellow,yellow,yellow,yellow,WHITE,0,0,WHITE,green,green,green,green,WHITE,0,blue,blue,blue,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,green,green,green,green,green,WHITE,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,0,blue,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,blue,blue,blue,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,blue,blue,blue,0,0,0,0,0},
+    {blue,blue,blue,blue,blue,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {blue,blue,blue,blue,blue,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0},
+    {0,blue,blue,blue,0,0,0,0,0,0,WHITE,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,WHITE,0,0,0,0,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,0,blue,0,0,WHITE,yellow,yellow,yellow,yellow,green,green,green,green,WHITE,0,0,0,0,blue,0,0,0,0,0,0},
+    {0,0,0,0,0,0,0,blue,blue,blue,0,0,WHITE,yellow,yellow,yellow,green,green,green,WHITE,0,0,0,0,blue,blue,blue,0,0,0,0,0},
+    {0,0,0,0,0,0,blue,blue,blue,blue,blue,0,0,WHITE,yellow,yellow,green,green,WHITE,0,0,0,0,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,0,0,0,0,0,blue,blue,blue,blue,blue,0,0,0,WHITE,yellow,green,WHITE,0,0,0,0,0,blue,blue,blue,blue,blue,0,0,0,0},
+    {0,0,0,0,0,0,0,blue,blue,blue,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0,0,blue,blue,blue,0,0,0,0,0},
   };
 
   static const uint16_t PROGMEM
@@ -228,6 +269,56 @@ static const uint16_t PROGMEM
 
    };
 
+static const uint16_t PROGMEM
+  babysleep[14][16]{
+{0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
+{0,0,0,0,WHITE,0,0,0,0,0,0,WHITE,0,0,0,0},
+{0,0,0,WHITE,0,WHITE,0,0,0,0,0,0,WHITE,0,0,0},
+{0,0,WHITE,0,0,WHITE,0,WHITE,0,0,0,0,0,WHITE,0,0},
+{0,WHITE,0,0,0,0,WHITE,0,WHITE,0,0,0,0,0,WHITE,0},
+{WHITE,0,0,0,0,0,0,WHITE,0,0,0,0,0,0,0,WHITE},
+{WHITE,0,0,0,0,0,0,0,0,0,0,0,0,0,0,WHITE},
+{0,WHITE,0,0,0,WHITE,WHITE,0,0,WHITE,WHITE,0,0,0,WHITE,0},
+{0,0,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,0,0},
+{0,WHITE,2,0,0,0,0,WHITE,WHITE,0,0,0,0,WHITE,WHITE,0},
+{0,0,WHITE,WHITE,WHITE,0,0,0,0,0,0,WHITE,WHITE,WHITE,0,0},
+{0,0,WHITE,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,WHITE,0,0},
+{0,0,0,WHITE,WHITE,0,0,0,0,0,0,WHITE,WHITE,0,0,0},
+{0,0,0,0,0,WHITE,WHITE,WHITE,WHITE,WHITE,WHITE,0,0,0,0,0},
+
+};
+
+static const uint16_t PROGMEM
+  newmark_v1[16][14]={
+ 	  {WHITE,WHITE,0,0,0,0,0,0,0,0,0,0,WHITE,WHITE},
+    {WHITE,yellow,WHITE,0,0,0,0,0,0,0,0,WHITE,green,WHITE},
+    {WHITE,yellow,yellow,WHITE,0,0,0,0,0,0,WHITE,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,WHITE,0,0,0,0,WHITE,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,WHITE,0,0,WHITE,green,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,yellow,WHITE,WHITE,green,green,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE},
+    {WHITE,yellow,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,green,WHITE},
+    {0,WHITE,yellow,yellow,yellow,yellow,yellow,green,green,green,green,green,WHITE,0},
+    {0,0,WHITE,yellow,yellow,yellow,yellow,green,green,green,green,WHITE,0,0},
+    {0,0,0,WHITE,yellow,yellow,yellow,green,green,green,WHITE,0,0,0},
+    {0,0,0,0,WHITE,yellow,yellow,green,green,WHITE,0,0,0,0},
+    {0,0,0,0,0,WHITE,yellow,green,WHITE,0,0,0,0,0},
+    {0,0,0,0,0,0,WHITE,WHITE,0,0,0,0,0,0},
+  };
+
+
+static const uint16_t PROGMEM
+  heartmark[6][9]{
+    {0,0,red,0,0,0,0,red,0},
+    {0,red,red,red,0,0,red,red,red},
+    {0,red,red,red,red,red,red,red,red,},
+    {0,0,red,red,red,red,red,red,0,},
+    {0,0,0,red,red,red,red,0,0},
+    {0,0,0,0,red,red,0,0,0},
+  };
+
 
 void numberText(char number1,char number2,int16_t tx,int16_t ty,int16_t txx, int16_t tyy){
    matrix.drawChar(tx, ty, number1, WHITE, BLACK,2);
@@ -236,10 +327,45 @@ void numberText(char number1,char number2,int16_t tx,int16_t ty,int16_t txx, int
 };
 
 void drawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
+
    matrix.drawRect(hpx,hpy,hpw,hph,color);
    matrix.drawRect(ipx,ipy,ipw,iph,color);
    delay(10000);
 };
+
+void rdrawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
+   matrix.drawRect(hpx,hpy,hpw,hph,color);
+   for (ipy = 15; ipy > 13; ipy--){
+   
+   matrix.drawRect(ipx,ipy,ipw,ipy,color);
+   delay(10);
+   }
+   
+   
+   delay(10000);
+};
+
+
+
+void heart_newmark(){
+  matrix.drawRGBBitmap(9, 0, newmark_v1[0],14,16);//初心者マーク
+  matrix.drawRGBBitmap(0, 0, heartmark[0],9, 6);
+  matrix.drawRGBBitmap(0, 9, heartmark[0],9, 6);
+  matrix.drawRGBBitmap(23, 0, heartmark[0],9, 6);
+  matrix.drawRGBBitmap(23, 10, heartmark[0],9, 6);
+
+
+}
+
+void changenewmark(){
+      matrix.drawRGBBitmap(0, 0, newmark[0],mw, mh );//画像表示
+      delay(1500);
+      matrix.drawRGBBitmap(0, 0, newmark1[0],mw, mh );//画像表示
+      delay(1500);
+      matrix.drawRGBBitmap(0, 0, newmark2[0],mw, mh );//画像表示
+      delay(1500);
+};
+
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -367,17 +493,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
   }
 };
 
-void rdrawHP(uint16_t color,int16_t ipx, int16_t ipy,int16_t ipw,int16_t iph){
-   matrix.drawRect(hpx,hpy,hpw,hph,color);
-   for (ipy = 15; ipy > 13; ipy--){
-   
-   matrix.drawRect(ipx,ipy,ipw,ipy,color);
-   delay(10);
-   }
-   
-   
-   delay(10000);
-};
+
 
 /*void numberText(uint8_t number){
   matrix.setTextSize(20,20);
@@ -415,7 +531,7 @@ void setup() {
   matrix.begin();
   matrix.clear();
   initBLEServise();
-  //matrix.setBrightness(BRIGHTNESS);
+  //matrix.setBrightness(BRIGHT);
 
  
 }
@@ -423,29 +539,7 @@ void setup() {
 
 void loop() {
      
+ changenewmark();
+ //heart_newmark();
       
-      //numberText('7','7',5,1,17,1);
-      //numberText('5','5',5,1,17,1);
-      //numberText('1','7',5,1,17,1);
-      //numberText('8','1',6,1,18,1);
-      //numberText('6','9',6,1,18,1);
-      //numberText('2','9',6,1,18,1);
-      //numberText('4','3',5,1,17,1);
-      //numberText('8','7',6,1,18,1);
-      //numberText('9','7',6,1,18,1);
-      //matrix.drawRGBBitmap(0, 0, gdriver[0],mw, mh );//画像表示
-      //matrix.drawRGBBitmap(0, 0, ydriver[0],mw, mh );//画像表示
-      //matrix.drawRGBBitmap(0, 0, rdriver[0],mw, mh );//画像表示
-
-      //drawHP(matrix.Color333(0, 7, 0),2,13,2,16);//満タン
-      // drawHP(orange,2,7,2,13);//半分
-       //drawHP(red,2,13,2,3);//限界
-       //drawHP(matrix.Color333(7, 0, 0),2,1,2,14);//半分
-
-      //matrix.drawRGBBitmap(0, 0, oldermark1[0],mw, mh );//画像表示
-      
-
-     
-  
-  
 }
